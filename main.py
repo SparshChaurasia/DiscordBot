@@ -51,7 +51,7 @@ async def on_message(message):
     mention = f"<@!{client.user.id}>"
     if mention in message.content:
         await message.channel.send(
-            f"Hi, this is {client.user.id}\n"
+            f"Hi, this is {client.user}\n"
             f"A general purpose discord bot made by {__author__}\n"
             f"My prefix is '{COMMAND_PREFIX}'"
         )
