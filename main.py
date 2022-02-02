@@ -8,13 +8,12 @@ A general-purpose discord bot.
 
 __title__ = "Discord Bot"
 __author__ = "Sparsh#0483"
-__version__ = "1.0.1"
 
 import os
 import discord
 from discord.ext import commands, tasks
-from itertools import cycle
 from dotenv import load_dotenv
+# from itertools import cycle
 
 
 load_dotenv()
@@ -66,7 +65,7 @@ async def on_command_error(ctx, error):
     print(error)
     if isinstance(error, discord.ext.commands.errors.MissingRequiredArgument):
         await ctx.send(
-            "Please pass all arguments\nUse {COMMAMD_PREFIX}help [command] for more help."
+            f"Please pass all arguments\nUse {COMMAND_PREFIX}help [command] for more help."
         )
         return
     # elif isinstance(error, discord.ext.commands.errors.CommandNotFound):

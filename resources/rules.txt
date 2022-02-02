@@ -1,1 +1,4 @@
-There are no rules
+# Your rules of the server goes here
+# These rules will be publicly avalible to all members of the server accessible through >rules command
+# btw lines starting with a # (pound) symbol are ignored
+No rules have been setup for this server by the owner

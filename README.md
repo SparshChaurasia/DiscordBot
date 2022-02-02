@@ -1,17 +1,25 @@
 # Discord Bot
 A general purpose discord bot built with discord.py api wrapper in python.
 
-## Deployment
-### Create a bot user on the discord developer portal
-Follow the steps given here and create a bot user
+## Features
+* Moderation commands
+* Miscellaneous commands 
+* Music support (coming soon)
+
+## Running
+#### Create a bot user on the discord developer portal
+Follow the steps given in the link below and create a bot user
 [click here](https://discordpy.readthedocs.io/en/stable/discord.html)
 
-### Environment Variables
+#### Make sure to get python 3.9 or higher
+This runtime is required to run the bot
+
+#### Set up environment variables for the project
 To run this project, you will need to add the following environment variables to your .env file
 `TOKEN`
 This is the token authorized by discord to your bot account
 
-### Clone the repository and start working with the soruce code
+#### Setup a virtual environment
 1. Install the virtual environment maker tool
     ```bash
     pip install virtualenv
@@ -25,24 +33,26 @@ This is the token authorized by discord to your bot account
 3. Activate virtual environment 
     (for linux and mac)
     ```bash
-    soruce ./venv/Scripts/activate
+    source ./venv/Scripts/activate
     ```
     (for windows)
     ```powershell
-    ./venv/Scripts/activate.sh
+    cd ./venv/Scripts/
+    ```
+    ```powershell
+    ./activate.sh
     ```
 
-4. Install required packages
+#### Install required packages
     ```bash
     pip install -r requirements.txt
     ```
+#### Run the instance of the bot
+```bash
+python main.py
+```
 
-5. Run the main file
-    ```bash
-    python main.py
-    ```
-==Your bot would be up and ready but remember that the bot is hosted temporarily on your local machine and would be down once you exit the code or close the terminal==
-
+> Your bot would be up and ready but remember that the bot is hosted temporarily on your local machine and would be down once you exit the code or close the terminal
 
 ## Documentation
 - [discord developer portal official documentation](https://discord.com/developers/docs/intro)

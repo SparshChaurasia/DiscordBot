@@ -50,15 +50,19 @@ class PublicFunctions(commands.Cog):
                 await ctx.reply(f"{result}")
                 return
         elif search_engine == "g":
-            result = search(query, tld="com", lang="en", num=1, start=0, stop=None)
+            result = search(query, tld="com", lang="en",
+                            num=1, start=0, stop=None)
             await ctx.reply(f"{result.__next__()}")
 
     @commands.command()
     async def rules(self, ctx):
         """Shows rules of the server"""
-
+        rules = ""
         with open(r"resources\rules.txt", "r") as file:
-            rules = "".join(file.readlines())
+            for line in file:
+                if line.startswith("#"):
+                    continue
+                rules = rules + f"\n{line}"
             await ctx.send(rules)
             return
 
