@@ -44,9 +44,9 @@ This is the token authorized by discord to your bot account
     ```
 
 #### Install required packages
-    ```bash
-    pip install -r requirements.txt
-    ```
+```bash
+pip install -r requirements.txt
+```
 #### Run the instance of the bot
 ```bash
 python main.py
