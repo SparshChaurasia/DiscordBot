@@ -129,7 +129,6 @@ async def bot(ctx):
         f"Username: {client.user}\n"
         f"Roles: {', '.join([role.name for role in ctx.guild.get_member(client.user.id).roles if role != ctx.guild.default_role])}\n"
         f"Author: {__author__}\n"
-        f"Version: {__version__}\n"
         f"Use {COMMAND_PREFIX}help to get a list of commands"
     )
     return
