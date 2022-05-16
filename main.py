@@ -47,7 +47,6 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    # mention = f"<@!{client.user.id}>"
     mention = str(client.user.id)
     if mention in message.content:
         await message.channel.send(
@@ -127,7 +126,10 @@ async def bot(ctx):
     """Info about the bot"""
     
     message = discord.Embed(
-        title=f"Info - {client.user}", description=f"Use {COMMAND_PREFIX}help to get a list of commands", color=0x00ff00)
+        title=f"Info - {client.user.name}", 
+        description=f"Use {COMMAND_PREFIX}help to get a list of commands", 
+        color=0x1167B1
+    )
     message.add_field(
         name="Roles", value=f"{', '.join([role.name for role in ctx.guild.get_member(client.user.id).roles if role != ctx.guild.default_role])}", inline=False)
     message.add_field(name="Author", value=f"{__author__}", inline=False)
@@ -140,10 +142,9 @@ async def bot(ctx):
 async def ping(ctx):
     """Shows bot latency"""
 
-    # Since latency given is in seconds
-    latency = round(client.latency * 1000)
+    latency = round(client.latency * 1000)  # Since latency given is in seconds
 
-    message = discord.Embed(color=0x0000FF)
+    message = discord.Embed(color=0x606060)
     message.add_field(name="Latency", value=f"{latency}ms")
     
     await ctx.send(embed=message)

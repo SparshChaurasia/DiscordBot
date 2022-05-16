@@ -25,7 +25,7 @@ class PublicFunctions(commands.Cog):
             message = discord.Embed(
                 title=f"Info - {ctx.message.author.name}", 
                 description=f"This is the info of {ctx.message.author.name}", 
-                color=0x00ff00
+                color=0x1167B1
             )
             message.add_field(name="Id", value=f"{ctx.message.author.id}", inline=False)
             message.add_field(name="Joined", value=f"{ctx.message.author.joined_at}")
@@ -38,7 +38,7 @@ class PublicFunctions(commands.Cog):
             message = discord.Embed(
                 title=f"Info - {member.name}", 
                 description=f"This is the info of {member.name}",
-                color=0x00ff00
+                color=0x1167B1
             )
             message.add_field(
                 name="Id", value=f"{member.id}", inline=False)
@@ -83,7 +83,9 @@ class PublicFunctions(commands.Cog):
                 rules = rules + f"\n{line}"
         
         message = discord.Embed(
-            title=f"Rules - {ctx.guild.name}", description="These are the rules set by the owner of the server", color=0xFF0000
+            title=f"Rules - {ctx.guild.name}", 
+            description="These are the rules set by the owner of the server", 
+            color=0x1167B1
         )
         message.add_field(name="Rules", value=rules)
         
