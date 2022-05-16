@@ -1,6 +1,8 @@
+import discord
 from discord.ext import commands
 from googlesearch import search
 import wikipedia
+
 import random
 
 
@@ -20,20 +22,36 @@ class PublicFunctions(commands.Cog):
     async def info(self, ctx, member: commands.MemberConverter = None):
         """Gives user info"""
         if member is None:
-            await ctx.reply(
-                f"Username: {ctx.message.author.mention}\n"
-                f"ID: {ctx.message.author.id}\n"
-                f"Joined: {ctx.message.author.joined_at}\n"
-                f"Roles: {', '.join([role.name for role in ctx.message.author.roles if role != ctx.guild.default_role])}"
+            message = discord.Embed(
+                title=f"Info - {ctx.message.author.name}", 
+                description=f"This is the info of {ctx.message.author.name}", 
+                color=0x00ff00
             )
-            return
+            message.add_field(name="Id", value=f"{ctx.message.author.id}", inline=False)
+            message.add_field(name="Joined", value=f"{ctx.message.author.joined_at}")
+            message.add_field(
+                name="Roles", 
+                value=f"{', '.join([role.name for role in ctx.message.author.roles])}", 
+                inline=False
+            )
         else:
-            await ctx.reply(
-                f"Username: {member.mention}\n"
-                f"ID: {member.id}\n"
-                f"Joined: {member.joined_at}\n"
-                f"Roles: {', '.join([role.name for role in member.roles if role != ctx.guild.default_role])}"
+            message = discord.Embed(
+                title=f"Info - {member.name}", 
+                description=f"This is the info of {member.name}",
+                color=0x00ff00
             )
+            message.add_field(
+                name="Id", value=f"{member.id}", inline=False)
+            message.add_field(
+                name="Joined", value=f"{member.joined_at}", inline=False)
+            message.add_field(
+                name="Roles", 
+                value=f"{', '.join([role.name for role in member.roles])}", 
+                inline=False
+            )
+       
+        await ctx.reply(embed=message)
+        return
 
     @commands.command()
     async def search(self, ctx, search_engine, *, query):
@@ -63,8 +81,14 @@ class PublicFunctions(commands.Cog):
                 if line.startswith("#"):
                     continue
                 rules = rules + f"\n{line}"
-            await ctx.send(rules)
-            return
+        
+        message = discord.Embed(
+            title=f"Rules - {ctx.guild.name}", description="These are the rules set by the owner of the server", color=0xFF0000
+        )
+        message.add_field(name="Rules", value=rules)
+        
+        await ctx.send(embed=message)
+        return
 
     @commands.command()
     async def decide(self, ctx):

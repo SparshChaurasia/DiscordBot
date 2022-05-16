@@ -47,10 +47,11 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    mention = f"<@!{client.user.id}>"
+    # mention = f"<@!{client.user.id}>"
+    mention = str(client.user.id)
     if mention in message.content:
         await message.channel.send(
-            f"Hi, this is {client.user}\n"
+            f"Hi, this is {client.user.name}\n"
             f"A general purpose discord bot made by {__author__}\n"
             f"My prefix is '{COMMAND_PREFIX}'"
         )
@@ -71,14 +72,14 @@ async def on_command_error(ctx, error):
     # elif isinstance(error, discord.ext.commands.errors.CommandNotFound):
     #     await ctx.send("No such command")
     elif isinstance(error, discord.ext.commands.errors.MissingRole):
-        await ctx.send("Requires additional permissions.")
+        await ctx.send("Missing required role.")
         return
     elif isinstance(error, discord.ext.commands.errors.MemberNotFound):
         await ctx.send("No such member.")
         return
-    # else:
-    #     await ctx.send("Something went wrong!")
-    #     return
+    else:
+        await ctx.send("Something went wrong!")
+        return
 
 
 # Updates status
@@ -124,13 +125,14 @@ for filename in os.listdir(r"./cogs/"):
 @client.command()
 async def bot(ctx):
     """Info about the bot"""
+    
+    message = discord.Embed(
+        title=f"Info - {client.user}", description=f"Use {COMMAND_PREFIX}help to get a list of commands", color=0x00ff00)
+    message.add_field(
+        name="Roles", value=f"{', '.join([role.name for role in ctx.guild.get_member(client.user.id).roles if role != ctx.guild.default_role])}", inline=False)
+    message.add_field(name="Author", value=f"{__author__}", inline=False)
 
-    await ctx.send(
-        f"Username: {client.user}\n"
-        f"Roles: {', '.join([role.name for role in ctx.guild.get_member(client.user.id).roles if role != ctx.guild.default_role])}\n"
-        f"Author: {__author__}\n"
-        f"Use {COMMAND_PREFIX}help to get a list of commands"
-    )
+    await ctx.send(embed=message)
     return
 
 
@@ -138,7 +140,13 @@ async def bot(ctx):
 async def ping(ctx):
     """Shows bot latency"""
 
-    await ctx.send(f"{round(client.latency * 1000)}ms")
+    # Since latency given is in seconds
+    latency = round(client.latency * 1000)
+
+    message = discord.Embed(color=0x0000FF)
+    message.add_field(name="Latency", value=f"{latency}ms")
+    
+    await ctx.send(embed=message)
     return
 
 
