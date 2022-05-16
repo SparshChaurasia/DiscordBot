@@ -96,26 +96,11 @@ class PublicFunctions(commands.Cog):
     async def decide(self, ctx):
         """Returns yes or no"""
 
-        replies = {
-            "affirmative": [
-                "This is acceptable",
-                "I'll allow it",
-                "Imagine doing that unironically",
-                "The council has decided, this is ok",
-                "This shouldn't interest me, but it does",
-            ],
-            "negative": [
-                "Unacceptable condition",
-                "What about no?",
-                "No because no",
-                "I like saying no",
-                "Just no, please, don't",
-            ],
-        }
+        with open(r"resources\replies.txt", "r") as f:
+            reply = random.choice(f.readlines())
 
-        choice = replies[random.choice(["affirmative", "negative"])]
-        await ctx.send(choice[random.randint(0, len(choice)) - 1])
-        return
+            await ctx.send(reply)
+            return
 
 
 def setup(client):

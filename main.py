@@ -68,8 +68,8 @@ async def on_command_error(ctx, error):
             f"Please pass all arguments\nUse {COMMAND_PREFIX}help [command] for more help."
         )
         return
-    # elif isinstance(error, discord.ext.commands.errors.CommandNotFound):
-    #     await ctx.send("No such command")
+    elif isinstance(error, discord.ext.commands.errors.CommandNotFound):
+        await ctx.send("No such command")
     elif isinstance(error, discord.ext.commands.errors.MissingRole):
         await ctx.send("Missing required role.")
         return
