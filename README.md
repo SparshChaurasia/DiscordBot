@@ -3,6 +3,7 @@ A general purpose discord bot built with discord.py api wrapper in python.
 
 ## Features
 * Moderation commands
+* Web search
 * Miscellaneous commands 
 * Music support (coming soon)
 
@@ -15,8 +16,8 @@ Follow the steps given in the link below and create a bot user
 This runtime is required to run the bot
 
 #### Set up environment variables for the project
-To run this project, you will need to add the following environment variables to your .env file
-`TOKEN`
+To run this project, you will need to add the following environment variables to your .env file<br />
+`TOKEN`<br />
 This is the token authorized by discord to your bot account
 
 #### Setup a virtual environment
@@ -37,10 +38,7 @@ This is the token authorized by discord to your bot account
     ```
     (for windows)
     ```powershell
-    cd ./venv/Scripts/
-    ```
-    ```powershell
-    ./activate.sh
+    ./venv/Scripts/activate
     ```
 
 #### Install required packages
