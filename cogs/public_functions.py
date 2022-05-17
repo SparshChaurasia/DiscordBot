@@ -1,7 +1,8 @@
 import discord
 from discord.ext import commands
 from googlesearch import search
-import wikipedia
+# import wikipedia
+import wikipediaapi
 
 import random
 
@@ -23,12 +24,12 @@ class PublicFunctions(commands.Cog):
         """Gives user info"""
         if member is None:
             message = discord.Embed(
-                title=f"Info - {ctx.message.author.name}", 
-                description=f"This is the info of {ctx.message.author.name}", 
+                title=f"Info", 
                 color=0x1167B1
             )
+            message.set_author(name=ctx.message.author.name, icon_url=ctx.message.author.avatar_url)
             message.add_field(name="Id", value=f"{ctx.message.author.id}", inline=False)
-            message.add_field(name="Joined", value=f"{ctx.message.author.joined_at}")
+            message.add_field(name="Joined", value=f"{ctx.message.author.joined_at}", inline=False)
             message.add_field(
                 name="Roles", 
                 value=f"{', '.join([role.name for role in ctx.message.author.roles])}", 
@@ -36,21 +37,19 @@ class PublicFunctions(commands.Cog):
             )
         else:
             message = discord.Embed(
-                title=f"Info - {member.name}", 
-                description=f"This is the info of {member.name}",
+                title=f"Info", 
                 color=0x1167B1
             )
-            message.add_field(
-                name="Id", value=f"{member.id}", inline=False)
-            message.add_field(
-                name="Joined", value=f"{member.joined_at}", inline=False)
+            message.set_author(name=member.name, icon_url=member.avatar_url)
+            message.add_field(name="Id", value=f"{member.id}", inline=False)
+            message.add_field(name="Joined", value=f"{member.joined_at}", inline=False)
             message.add_field(
                 name="Roles", 
                 value=f"{', '.join([role.name for role in member.roles])}", 
                 inline=False
             )
        
-        await ctx.reply(embed=message)
+        await ctx.send(embed=message)
         return
 
     @commands.command()
@@ -58,19 +57,53 @@ class PublicFunctions(commands.Cog):
         """Search the web for given term; <search engine (w/g)> <search term>"""
 
         if search_engine == "w":
-            try:
-                result = wikipedia.summary(query, sentences=3)
-            except wikipedia.exceptions.PageError:
-                result = f'No results for "{query}". Try searching for another keyword!'
-            except wikipedia.exceptions.DisambiguationError:
-                result = f'No explict matches for "{query}". Try using words with clearer insight.'
-            finally:
-                await ctx.reply(f"{result}")
+            wiki_wiki = wikipediaapi.Wikipedia(
+                language='en',
+                extract_format=wikipediaapi.ExtractFormat.WIKI
+            )
+
+            p_wiki = wiki_wiki.page(query)
+
+            if not p_wiki.exists():
+                print("page does not exist")
+                message = discord.Embed(
+                    title=f"No results - {query}", 
+                    description=f"No matching pages for {query} have been found\n"
+                                 " - Try using common words or phrases\n"
+                                 " - Use important words only\n"
+                                 " - Avoid any typos",
+                    color=0xFF0000
+                )
+                await ctx.send(embed=message)
                 return
+
+            message = discord.Embed(
+                title=f"Search results - {query}",
+                url=p_wiki.fullurl,
+                description=". ".join(p_wiki.summary.split(". ")[0:3]),
+                color=0x1167B1   
+            )
+            for section in p_wiki.sections:
+                if section.text:
+                    message.add_field(name=section.title, value=section.text.split(". ")[0])
+                message
+
+            await ctx.send(embed=message)
+            return
+
         elif search_engine == "g":
-            result = search(query, tld="com", lang="en",
-                            num=1, start=0, stop=None)
-            await ctx.reply(f"{result.__next__()}")
+            result = search(query, lang="en", num=5, start=0, stop=6)
+
+            search_link = query.replace(" ", "+")
+            message = discord.Embed(
+                title=f"Search results - {query}",
+                url=f"https://google.com/search?q={search_link}",
+                description="\n".join(result),
+                color=0x1167B1
+            )   
+
+            await ctx.reply(embed=message)
+            return
 
     @commands.command()
     async def rules(self, ctx):

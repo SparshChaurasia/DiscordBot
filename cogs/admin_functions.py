@@ -162,11 +162,12 @@ class AdminFunctions(commands.Cog):
             color=0xFFA500
         )
         message.add_field(name="Reason", value=reason)
-        message.add_field(name="Duration", value=f"{amount} {units[unit]}")
-        
+        message.add_field(name="Duration", value=f"{amount} {units[unit]}")   
+       
         await ctx.send(embed=message)
 
-        await asyncio.sleep(int(amount) * multiplier[unit])
+        await asyncio.sleep(int(amount) * multiplier[unit]) # Since the sleep functions takes in seconds as arguement
+
         await member.edit(mute=False)
 
         message = discord.Embed(
@@ -181,7 +182,7 @@ class AdminFunctions(commands.Cog):
     @commands.command()
     @commands.has_role(ADMIN_ROLE_1 or ADMIN_ROLE_2)
     async def unmute(self, ctx, member: commands.MemberConverter):
-        # await member.edit(mute=False)
+        await member.edit(mute=False)
 
         message = discord.Embed(
             title=f"Unmuted - {member.name}",

@@ -126,10 +126,13 @@ async def bot(ctx):
     """Info about the bot"""
     
     message = discord.Embed(
-        title=f"Info - {client.user.name}", 
+        title=f"Info", 
         description=f"Use {COMMAND_PREFIX}help to get a list of commands", 
         color=0x1167B1
     )
+    message.set_author(name=client.user.name, icon_url=client.user.avatar_url)
+    message.add_field(name="Id", value=client.user.id, inline=False)
+    # message.add_field(name="Joined", value=client.user.joined_at, inline=False)
     message.add_field(
         name="Roles", value=f"{', '.join([role.name for role in ctx.guild.get_member(client.user.id).roles if role != ctx.guild.default_role])}", inline=False)
     message.add_field(name="Author", value=f"{__author__}", inline=False)
