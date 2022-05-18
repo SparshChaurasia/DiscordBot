@@ -9,9 +9,11 @@ A general-purpose discord bot.
 __title__ = "Discord Bot"
 __author__ = "Sparsh#0483"
 
-import os
 import discord
 from discord.ext import commands, tasks
+from discord import Guild
+
+import os
 from dotenv import load_dotenv
 # from itertools import cycle
 
@@ -22,10 +24,14 @@ TOKEN = os.getenv("TOKEN")
 COMMAND_PREFIX = ">"
 # STATUS = cycle(["Help Command", "Playing Music", "Managing Channels"])
 
+intents = discord.Intents.default()
+intents.members = True
+
 client = commands.Bot(
     command_prefix=COMMAND_PREFIX,
     help_command=commands.MinimalHelpCommand(),
     status=discord.Status.idle,
+    intents=intents
 )
 
 
@@ -40,20 +46,53 @@ async def on_ready():
     return
 
 
-# @client.event
-# async def on_guild_join(ctx):
-#     pass
+@client.event
+async def on_guild_join(guild):
+    await guild.owner.send(
+        "Hello! Thanks for inviting me to your server.\n"
+        f"This is {client.user.name}, a open-source general-purpose discord bot built with discordpy api wrapper in python.\n\n"
+        "Contribute here: https://github.com/SparshChaurasia/DiscordBot"
+    )
 
+    for channel in guild.text_channels:
+        if channel.permissions_for(guild.me).send_messages:
+            message = discord.Embed(
+                title=f"Hi, this is {client.user.name}",
+                description=f"My prefix is '{COMMAND_PREFIX}'\nUse {COMMAND_PREFIX}help to get started",
+                color=0x1167B1
+            )
+            await channel.send(embed=message)
+            break
+
+
+@client.event
+async def on_member_join(member):
+    rules = ""
+    with open(r"resources\rules.txt", "r") as file:
+        for line in file:
+            if line.startswith("#"):
+                continue
+            rules = rules + f"\n{line}"
+
+    message = discord.Embed(
+        title=f"Hi, this is {client.user.name}",
+        description=f"My command prefix in this server is '{COMMAND_PREFIX}'",
+        color=0x1167B1
+    )
+    message.add_field(name="Rules", value=rules)
+
+    await member.send(embed=message)
 
 @client.event
 async def on_message(message):
     mention = str(client.user.id)
     if mention in message.content:
-        await message.channel.send(
-            f"Hi, this is {client.user.name}\n"
-            f"A general purpose discord bot made by {__author__}\n"
-            f"My prefix is '{COMMAND_PREFIX}'"
+        message_ = discord.Embed(
+            title=f"Hi, this is {client.user.name}",
+            description=f"My prefix is '{COMMAND_PREFIX}'\nUse {COMMAND_PREFIX}help to get started",
+            color=0x1167B1
         )
+        await message.channel.send(embed=message_)
         return
     else:
         await client.process_commands(message)

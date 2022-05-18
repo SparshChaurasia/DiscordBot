@@ -65,7 +65,7 @@ class PublicFunctions(commands.Cog):
             p_wiki = wiki_wiki.page(query)
 
             if not p_wiki.exists():
-                print("page does not exist")
+                # print("page does not exist")
                 message = discord.Embed(
                     title=f"No results - {query}", 
                     description=f"No matching pages for {query} have been found\n"
@@ -102,7 +102,7 @@ class PublicFunctions(commands.Cog):
                 color=0x1167B1
             )   
 
-            await ctx.reply(embed=message)
+            await ctx.send(embed=message)
             return
 
     @commands.command()
