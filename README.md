@@ -52,6 +52,12 @@ python main.py
 
 > Your bot would be up and ready but remember that the bot is hosted temporarily on your local machine and would be down once you exit the code or close the terminal
 
+## Screenshots
+![discord-bot-invite-preview](./images/discord-bot-invite-preview.JPG)
+![discord-bot-mention-preview](./images/discord-bot-mention-preview.JPG)
+![discord-bot-moderation1-preview](./images/discord-bot-moderation1-preview.JPG)
+![discord-bot-moderation2-preview](./images/discord-bot-moderation2-preview.JPG)
+
 ## Documentation
 - [discord developer portal official documentation](https://discord.com/developers/docs/intro)
 - [discordpy official documentation](https://discordpy.readthedocs.io/en/stable/)
