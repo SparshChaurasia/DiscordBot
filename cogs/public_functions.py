@@ -1,10 +1,13 @@
+import random
+import requests
+
 import discord
+import wikipediaapi
 from discord.ext import commands
 from googlesearch import search
-# import wikipedia
-import wikipediaapi
 
-import random
+
+JOKE_API = "https://v2.jokeapi.dev/joke/Any?format=txt"
 
 
 class PublicFunctions(commands.Cog):
@@ -24,31 +27,35 @@ class PublicFunctions(commands.Cog):
         """Gives user info"""
         if member is None:
             message = discord.Embed(
-                title=f"Info", 
+                title=f"Info",
                 color=0x1167B1
             )
-            message.set_author(name=ctx.message.author.name, icon_url=ctx.message.author.avatar_url)
-            message.add_field(name="Id", value=f"{ctx.message.author.id}", inline=False)
-            message.add_field(name="Joined", value=f"{ctx.message.author.joined_at}", inline=False)
+            message.set_author(name=ctx.message.author.name,
+                               icon_url=ctx.message.author.avatar_url)
             message.add_field(
-                name="Roles", 
-                value=f"{', '.join([role.name for role in ctx.message.author.roles])}", 
+                name="Id", value=f"{ctx.message.author.id}", inline=False)
+            message.add_field(
+                name="Joined", value=f"{ctx.message.author.joined_at}", inline=False)
+            message.add_field(
+                name="Roles",
+                value=f"{', '.join([role.name for role in ctx.message.author.roles])}",
                 inline=False
             )
         else:
             message = discord.Embed(
-                title=f"Info", 
+                title=f"Info",
                 color=0x1167B1
             )
             message.set_author(name=member.name, icon_url=member.avatar_url)
             message.add_field(name="Id", value=f"{member.id}", inline=False)
-            message.add_field(name="Joined", value=f"{member.joined_at}", inline=False)
             message.add_field(
-                name="Roles", 
-                value=f"{', '.join([role.name for role in member.roles])}", 
+                name="Joined", value=f"{member.joined_at}", inline=False)
+            message.add_field(
+                name="Roles",
+                value=f"{', '.join([role.name for role in member.roles])}",
                 inline=False
             )
-       
+
         await ctx.send(embed=message)
         return
 
@@ -65,13 +72,12 @@ class PublicFunctions(commands.Cog):
             p_wiki = wiki_wiki.page(query)
 
             if not p_wiki.exists():
-                # print("page does not exist")
                 message = discord.Embed(
-                    title=f"No results - {query}", 
+                    title=f"No results - {query}",
                     description=f"No matching pages for {query} have been found\n"
-                                 " - Try using common words or phrases\n"
-                                 " - Use important words only\n"
-                                 " - Avoid any typos",
+                    " - Try using common words or phrases\n"
+                    " - Use important words only\n"
+                    " - Avoid any typos",
                     color=0xFF0000
                 )
                 await ctx.send(embed=message)
@@ -81,11 +87,12 @@ class PublicFunctions(commands.Cog):
                 title=f"Search results - {query}",
                 url=p_wiki.fullurl,
                 description=". ".join(p_wiki.summary.split(". ")[0:3]),
-                color=0x1167B1   
+                color=0x1167B1
             )
             for section in p_wiki.sections:
                 if section.text:
-                    message.add_field(name=section.title, value=section.text.split(". ")[0])
+                    message.add_field(name=section.title,
+                                      value=section.text.split(". ")[0])
                 message
 
             await ctx.send(embed=message)
@@ -100,7 +107,7 @@ class PublicFunctions(commands.Cog):
                 url=f"https://google.com/search?q={search_link}",
                 description="\n".join(result),
                 color=0x1167B1
-            )   
+            )
 
             await ctx.send(embed=message)
             return
@@ -114,14 +121,14 @@ class PublicFunctions(commands.Cog):
                 if line.startswith("#"):
                     continue
                 rules = rules + f"\n{line}"
-        
+
         message = discord.Embed(
-            title=f"Rules - {ctx.guild.name}", 
-            description="These are the rules set by the owner of the server", 
+            title=f"Rules - {ctx.guild.name}",
+            description="These are the rules set by the owner of the server",
             color=0x1167B1
         )
         message.add_field(name="Rules", value=rules)
-        
+
         await ctx.send(embed=message)
         return
 
@@ -134,6 +141,14 @@ class PublicFunctions(commands.Cog):
 
             await ctx.send(reply)
             return
+
+    @commands.command()
+    async def joke(self, ctx):
+        """Tells a joke"""
+
+        response = requests.get(JOKE_API)
+        await ctx.send(response.text)
+        return
 
 
 def setup(client):

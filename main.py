@@ -9,12 +9,13 @@ A general-purpose discord bot.
 __title__ = "Discord Bot"
 __author__ = "Sparsh#0483"
 
-import discord
-from discord.ext import commands, tasks
-from discord import Guild
-
 import os
 from dotenv import load_dotenv
+
+import discord
+from discord import Guild
+from discord.ext import commands, tasks
+
 # from itertools import cycle
 
 
@@ -79,9 +80,10 @@ async def on_member_join(member):
         description=f"My command prefix in this server is '{COMMAND_PREFIX}'",
         color=0x1167B1
     )
-    message.add_field(name="Rules", value=rules)
+    message.add_field(name="Rules for this server", value=rules)
 
     await member.send(embed=message)
+
 
 @client.event
 async def on_message(message):
@@ -163,10 +165,10 @@ for filename in os.listdir(r"./cogs/"):
 @client.command()
 async def bot(ctx):
     """Info about the bot"""
-    
+
     message = discord.Embed(
-        title=f"Info", 
-        description=f"Use {COMMAND_PREFIX}help to get a list of commands", 
+        title=f"Info",
+        description=f"Use {COMMAND_PREFIX}help to get a list of commands",
         color=0x1167B1
     )
     message.set_author(name=client.user.name, icon_url=client.user.avatar_url)
@@ -188,7 +190,7 @@ async def ping(ctx):
 
     message = discord.Embed(color=0x606060)
     message.add_field(name="Latency", value=f"{latency}ms")
-    
+
     await ctx.send(embed=message)
     return
 
