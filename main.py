@@ -20,7 +20,7 @@ from discord.ext import commands, tasks
 
 
 load_dotenv()
-TOKEN = os.getenv("TOKEN")
+TOKEN = os.getenv("TOKEN")  # Discord bot token
 
 COMMAND_PREFIX = ">"
 # STATUS = cycle(["Help Command", "Playing Music", "Managing Channels"])
@@ -34,6 +34,8 @@ client = commands.Bot(
     status=discord.Status.idle,
     intents=intents
 )
+
+# -------------- Events --------------
 
 
 @client.event
@@ -85,22 +87,9 @@ async def on_member_join(member):
     await member.send(embed=message)
 
 
-@client.event
-async def on_message(message):
-    mention = str(client.user.id)
-    if mention in message.content:
-        message_ = discord.Embed(
-            title=f"Hi, this is {client.user.name}",
-            description=f"My prefix is '{COMMAND_PREFIX}'\nUse {COMMAND_PREFIX}help to get started",
-            color=0x1167B1
-        )
-        await message.channel.send(embed=message_)
-        return
-    else:
-        await client.process_commands(message)
+# -------------- Error handlers ------------------
 
 
-# Error handlers
 @client.event
 async def on_command_error(ctx, error):
     print(error)
@@ -128,7 +117,9 @@ async def on_command_error(ctx, error):
 #     await client.change_presence(activity=discord.Game(STATUS.__next__()))
 
 
-# Load cog
+# -------------- Load/Unload Cogs ------------------
+
+
 @client.command()
 @commands.has_role("Bot support")
 async def load(ctx, extension):
@@ -160,6 +151,8 @@ async def reload(ctx, extension):
 for filename in os.listdir(r"./cogs/"):
     if filename.endswith(".py"):
         client.load_extension(f"cogs.{filename[:-3]}")
+
+# -------------- Miscellaneous Commands ------------------
 
 
 @client.command()
